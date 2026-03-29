@@ -67,6 +67,8 @@
       <configuration Name="Common" filter="c;cpp;cxx;cc;h;s;asm;inc" />
       <file file_name="Application/src/main.c" />
       <file file_name="Application/src/MK60_gpio.c" />
+      <file file_name="Application/src/MK60_pit.c" />
+      <file file_name="Application/src/MK60_system.c" />
     </folder>
     <folder Name="System Files">
       <file file_name="Kinetis_K60/Source/Kinetis_K60_Startup.s" />
