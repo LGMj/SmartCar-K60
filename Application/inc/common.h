@@ -83,6 +83,11 @@ void get_clk(void);
 #include "MK60D10.h"
 
 /**
+ * @brief 包含 SEGGER RTT 日志接口（见 SEGGER_RTT_Conf.h、ThirdParty/SEGGER_RTT）
+ */
+#include "rtt_log.h"
+
+/**
  * @brief 位带操作便捷宏 - 基于 SDK 中的 BITBAND_REG
  * 使用方法: PAout(28) = 1;  // 设置 PTA28 为高电平
  */

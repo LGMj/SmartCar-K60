@@ -41,6 +41,24 @@ void pit_init(PITn_e ch, uint32 us);
 void pit_init_interrupt(PITn_e ch, uint32 us, uint8 irq);
 
 /**
+ * @brief 获取 PIT 通道累计中断次数
+ * @param ch  PIT 通道 (PIT_CH0 ~ PIT_CH3)
+ * @return    累计中断次数
+ *
+ * @note  与 pit_init_interrupt 配合使用，每次初始化会重置计数器
+ *
+ * 示例 (PIT 每 500ms 中断一次):
+ *   tick = pit_get_tick(PIT_CH0);  // 获取中断次数
+ *   ms = tick * 500;               // 转换为毫秒
+ */
+uint32 pit_get_tick(PITn_e ch);
+
+/**
+ * @brief PIT 中断计数递增（在 ISR 中调用）
+ */
+void _pit_inc_tick(PITn_e ch);
+
+/**
  * @brief 开启 PIT 定时器
  * @param ch    PIT 通道
  */
