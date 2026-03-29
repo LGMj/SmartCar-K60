@@ -23,6 +23,8 @@
 void PIT0_IRQHandler(void) {
     pit_clear_flag(PIT_CH0);   // 清除中断标志
     gpio_turn(A28);            // 翻转 LED 状态
+    _pit_inc_tick(PIT_CH0);    // 更新中断计数器
+    LOG("[%ums] LED toggled", pit_get_tick(PIT_CH0) * 500);
 }
 
 /**
@@ -31,6 +33,18 @@ void PIT0_IRQHandler(void) {
 int main(void) {
     // 更新系统时钟频率变量 (bus_clk_mhz 等)
     get_clk();
+
+    // 初始化 SEGGER RTT（在 RAM 中建立控制块，供 J-Link RTT Viewer 读取）
+    RTT_Init();
+
+    LOG_INFO("========================================");
+    LOG_INFO("  MK60 PIT LED Project - RTT Log");
+    LOG_INFO("========================================");
+    LOG_INFO("Core Clock: %d MHz", core_clk_mhz);
+    LOG_INFO("Bus Clock:  %d MHz", bus_clk_mhz);
+    LOG_INFO("MCGOUT:    %d MHz", mcgout_clk_mhz);
+    LOG_INFO("PIT Timer: 500ms period, LED on PTA28");
+    LOG_INFO("========================================");
 
     // 初始化 PTA28 为 GPIO 输出，初始值为高 (LED 灭)
     gpio_init(A28, GPO, 1);
@@ -41,8 +55,11 @@ int main(void) {
     // 开启 PIT 定时器
     pit_start(PIT_CH0);
 
+    LOG_INFO("System initialized, starting main loop...");
+
     // 主循环 - LED 翻转在中断服务程序中完成，主循环空闲
     while (1) {
         // PIT 中断自动处理 LED 闪烁，无需在主循环中做延时操作
+        // 可以在此处添加其他应用逻辑
     }
 }

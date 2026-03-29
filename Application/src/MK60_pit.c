@@ -13,6 +13,26 @@
 
 #define PIT_CLK_HZ  (100000000UL)  /**< PIT 时钟频率: bus_clk = 100MHz */
 
+/* PIT 中断计数器 (用于计时，单位: PIT 中断次数) */
+static volatile uint32 _pit_tick[PIT_CH3 + 1] = {0};
+
+/**
+ * @brief PIT 中断计数递增（在 ISR 中调用）
+ * @param ch  PIT 通道
+ */
+void _pit_inc_tick(PITn_e ch) {
+    _pit_tick[ch]++;
+}
+
+/**
+ * @brief 获取指定 PIT 通道的累计中断次数
+ * @param ch  PIT 通道
+ * @return    累计中断次数
+ */
+uint32 pit_get_tick(PITn_e ch) {
+    return _pit_tick[ch];
+}
+
 /**
  * @brief 获取 bus_clk 时钟频率 (Hz)
  * @return 总线时钟频率
@@ -63,6 +83,7 @@ void pit_init(PITn_e ch, uint32 us) {
  */
 void pit_init_interrupt(PITn_e ch, uint32 us, uint8 irq) {
     pit_enable();
+    _pit_tick[ch] = 0;
 
     uint32 bus_hz = get_bus_clk_hz();
     uint32 ldval = bus_hz / 1000000UL * us - 1;
