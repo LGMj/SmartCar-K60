@@ -1,0 +1,79 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution Name="MK60_Blinky" target="8" version="2">
+  <configuration
+    Name="Debug"
+    c_preprocessor_definitions="DEBUG"
+    gcc_debugging_level="Level 3"
+    gcc_omit_frame_pointer="Yes"
+    gcc_optimization_level="None" />
+  <configuration
+    Name="Release"
+    c_preprocessor_definitions="NDEBUG"
+    gcc_debugging_level="Level 2"
+    gcc_omit_frame_pointer="Yes"
+    gcc_optimization_level="Level 2 balanced" />
+  <project Name="MK60_Blinky">
+    <configuration
+      LIBRARY_IO_TYPE="RTT"
+      Name="Common"
+      Target="MK60DN512xxx10"
+      arm_architecture="v7EM"
+      arm_compiler_variant="SEGGER"
+      arm_core_type="Cortex-M4"
+      arm_endian="Little"
+      arm_fp_abi="Soft"
+      arm_fpu_type="None"
+      arm_linker_heap_size="1024"
+      arm_linker_process_stack_size="0"
+      arm_linker_stack_size="2048"
+      arm_linker_variant="SEGGER"
+      arm_rtl_variant="SEGGER"
+      arm_simulator_memory_simulation_parameter="ROM;0x00000000;0x00080000;RAM;0x1FFF0000;0x00010000;RAM;0x20000000;0x00010000"
+      arm_target_debug_interface_type="ADIv5"
+      arm_target_device_name="MK60DN512xxx10"
+      arm_target_interface_type="SWD"
+      c_preprocessor_definitions="ARM_MATH_CM4;MK60DN512xxx10;__KINETIS_K60_FAMILY;__NO_FPU_ENABLE"
+      c_user_include_directories="$(ProjectDir)/CMSIS_5/CMSIS/Core/Include;$(ProjectDir)/Kinetis_K60/Device/Include;$(ProjectDir)/Application/inc"
+      debug_register_definition_file="$(ProjectDir)/Settings/MK60D10_Registers.xml"
+      debug_stack_pointer_start="__stack_end__"
+      debug_start_from_entry_point_symbol="Yes"
+      debug_target_connection="J-Link"
+      gcc_entry_point="Reset_Handler"
+      link_linker_script_file="$(ProjectDir)/Settings/K60_Flash.icf"
+      linker_memory_map_file="$(ProjectDir)/Settings/MK60DN512xxx10_MemoryMap.xml"
+      linker_output_format="srec"
+      linker_printf_fp_enabled="Float"
+      macros="DeviceHeaderFile=$(ProjectDir)/Kinetis_K60/Device/Include/Kinetis_K6x.h;DeviceSystemFile=$(ProjectDir)/Kinetis_K60/Device/Source/system_MK60D10.c;DeviceVectorsFile=$(ProjectDir)/Kinetis_K60/Source/MK60D10_Vectors.s;DeviceFamily=Kinetis_K60;Target=MK60DN512xxx10"
+      project_directory=""
+      project_type="Executable"
+      target_reset_script="Reset();"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
+    <configuration Name="Debug" debug_target_connection="J-Link" />
+    <folder Name="CMSIS Files">
+      <file file_name="Kinetis_K60/Device/Include/Kinetis_K6x.h" />
+      <file file_name="Kinetis_K60/Device/Source/system_MK60D10.c">
+        <configuration
+          Name="Common"
+          default_code_section=".init"
+          default_const_section=".init_rodata" />
+      </file>
+    </folder>
+    <folder Name="Script Files">
+      <file file_name="Kinetis_K60/Scripts/Kinetis_K60_Target.js">
+        <configuration Name="Common" file_type="Reset Script" />
+      </file>
+    </folder>
+    <folder Name="Source Files">
+      <configuration Name="Common" filter="c;cpp;cxx;cc;h;s;asm;inc" />
+      <file file_name="Application/src/main.c" />
+      <file file_name="Application/src/MK60_gpio.c" />
+    </folder>
+    <folder Name="System Files">
+      <file file_name="Kinetis_K60/Source/Kinetis_K60_Startup.s" />
+      <file file_name="Kinetis_K60/Source/MK60D10_Vectors.s">
+        <configuration Name="Common" file_type="Assembly" />
+      </file>
+      <file file_name="Kinetis_K60/Source/SEGGER_THUMB_Startup.s" />
+    </folder>
+  </project>
+</solution>

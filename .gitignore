@@ -1,0 +1,25 @@
+# Build output
+Output/
+*.o
+*.d
+*.lst
+
+# SES build files
+*.emSession
+*.emProject.user
+
+# IDE files
+.DS_Store
+Thumbs.db
+
+# Debug files
+*.pdb
+*.elf
+*.map
+*.srec
+*.ind
+
+# Temp files
+*~
+*.swp
+*.bak
