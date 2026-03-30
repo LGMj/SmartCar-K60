@@ -21,10 +21,17 @@
  * 每 500ms 执行一次，翻转 LED 状态
  */
 void PIT0_IRQHandler(void) {
+    static uint32_t count = 0;
+    static uint32_t tick = 0;
+    count++;
     pit_clear_flag(PIT_CH0);   // 清除中断标志
     gpio_turn(A28);            // 翻转 LED 状态
     _pit_inc_tick(PIT_CH0);    // 更新中断计数器
-    LOG("[%ums] LED toggled", pit_get_tick(PIT_CH0) * 500);
+    // LOG("[%ums] LED toggled", pit_get_tick(PIT_CH0) * 500);
+    if (count % 2 == 0) {
+        tick++;
+        LOG("tick: %d", tick);
+    }
 }
 
 /**

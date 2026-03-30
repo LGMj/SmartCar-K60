@@ -14,9 +14,9 @@
  * @brief 系统时钟频率变量 (MHz)
  *
  * 由 SystemInit() 根据 CLOCK_SETUP 配置自动设置
- * CLOCK_SETUP=1 (PEE 模式): 100MHz
- * CLOCK_SETUP=0 (FEI 模式): 约 42MHz
- * CLOCK_SETUP=2 (BLPE 模式): 8MHz
+ * CLOCK_SETUP=0: MCGOUT=100MHz, Core=50MHz, Bus=25MHz
+ * CLOCK_SETUP=1: MCGOUT=150MHz, Core=75MHz, Bus=37.5MHz
+ * CLOCK_SETUP=2: MCGOUT=180MHz, Core=90MHz, Bus=60MHz (默认)
  */
 uint32 mcgout_clk_mhz;
 uint32 core_clk_mhz;
@@ -34,6 +34,9 @@ void get_clk(void) {
 
     mcgout_clk = SystemCoreClock;
 
+    /* 读取 SIM_CLKDIV1 中的 OUTDIV 分频值
+     * 注意: OUTDIV 字段的值是除数减 1，例如 OUTDIV1=0 表示除以 1，OUTDIV1=1 表示除以 2
+     */
     outdiv1 = (uint8)((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV1_MASK) >> SIM_CLKDIV1_OUTDIV1_SHIFT);
     outdiv2 = (uint8)((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV2_MASK) >> SIM_CLKDIV1_OUTDIV2_SHIFT);
     outdiv3 = (uint8)((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV3_MASK) >> SIM_CLKDIV1_OUTDIV3_SHIFT);
@@ -41,11 +44,7 @@ void get_clk(void) {
 
     mcgout_clk_mhz = mcgout_clk / 1000000UL;
 
-    if (outdiv1 == 0) outdiv1 = 1;
-    if (outdiv2 == 0) outdiv2 = 1;
-    if (outdiv3 == 0) outdiv3 = 1;
-    if (outdiv4 == 0) outdiv4 = 1;
-
-    core_clk_mhz = mcgout_clk / (outdiv1 * 1000000UL);
-    bus_clk_mhz  = mcgout_clk / (outdiv2 * 1000000UL);
+    /* OUTDIV=0 表示 1 分频，所以用 (value + 1) 作为除数 */
+    core_clk_mhz = mcgout_clk / ((outdiv1 + 1) * 1000000UL);
+    bus_clk_mhz  = mcgout_clk / ((outdiv2 + 1) * 1000000UL);
 }
