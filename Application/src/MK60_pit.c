@@ -3,15 +3,17 @@
  * @brief   PIT 周期中断定时器驱动实现
  * @version 1.0
  *
- * PIT 模块时钟源为 bus_clk (默认 100MHz)
+ * PIT 模块时钟源为 bus_clk (根据 CLOCK_SETUP 配置)
  * 定时时间计算公式: LDVAL = bus_clk_hz * us / 1000000 - 1
  * 计数器向下递减，递减到 0 时触发一次中断
+ *
+ * 时钟配置参考 (CLOCK_SETUP=2, 默认):
+ *   MCGOUT=180MHz, Core=90MHz, Bus=60MHz
+ * 注意: 实际 bus_clk 由 get_clk() 根据 SIM_CLKDIV1 计算得出
  */
 
 #include "MK60_pit.h"
 #include "MK60D10.h"
-
-#define PIT_CLK_HZ  (100000000UL)  /**< PIT 时钟频率: bus_clk = 100MHz */
 
 /* PIT 中断计数器 (用于计时，单位: PIT 中断次数) */
 static volatile uint32 _pit_tick[PIT_CH3 + 1] = {0};
