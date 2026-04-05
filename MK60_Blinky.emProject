@@ -49,6 +49,7 @@
       target_reset_script="Reset();"
       target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration Name="Debug" debug_target_connection="J-Link" />
+    <configuration Name="Debug-OpenOCD" debug_target_connection="CMSIS-DAP" />
     <folder Name="CMSIS Files">
       <file file_name="Kinetis_K60/Device/Include/Kinetis_K6x.h" />
       <file file_name="Kinetis_K60/Device/Source/system_MK60D10.c">
